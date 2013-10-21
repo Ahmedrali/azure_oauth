@@ -2,10 +2,9 @@ class AuthController < ApplicationController
 
   # redirect the user to peerialism authentication Hub
   def authenticate
-    authenticatorURL = "https://peerialism.azurewebsites.net/"
     return_url = "#{root_url}azure_auth"
     query_params = (request.query_string.nil? || request.query_string.empty?) ? "" : "#{request.query_string}&"
-    url = "#{authenticatorURL}?#{query_params}peerauth-return=#{return_url.encode}"
+    url = "#{AUTH_URL}?#{query_params}peerauth-return=#{return_url.encode}"
     redirect_to url
   end
 

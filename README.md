@@ -18,7 +18,12 @@ Or install it yourself as:
 
 ## Usage
 
-Use "/authenticate" url to start the authentication process.
+1- Set an configuration variable "AUTH_URL" equal to the authentication url.
+    e.g. create "/config/initializers/azure_oauth.rb" and put this line on it
+    
+    AUTH_URL = "http://url.com"
+    
+2- Use "/authenticate" url to start the authentication process.
 
 ## Contributing
 
