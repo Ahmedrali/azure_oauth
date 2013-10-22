@@ -17,21 +17,8 @@ class AuthController < ApplicationController
         redirect_to root_path
         return
       end
-      user = User.where(:email => email).first
-      unless user
-        password = Devise.friendly_token[0,8]
-        user = User.create(
-                           email:email,
-                           password:password,
-                           password_confirmation:password
-                           )
-      end
-      
-      if user.email_confirmed?
-        sign_in_and_redirect user, :event => :authentication
-      else
-        redirect_to root_path, :notice => I18n.t(:conf_msg, :scope => [:messages, :controllers, :invitations])
-      end
+      path = Rails.application.routes.recognize_path CALLBACK_URL
+      redirect_to :controller => path[:controller], :action => path[:action], :email => email
     else
       flash[:alert] = "No email found."
       redirect_to root_path
@@ -52,13 +39,15 @@ class AuthController < ApplicationController
 
   # Decode the given token
   def decode(token)
-    key = "IOUWHEIJHDLKJHPiuhpsdih98392hjhsad"
-    decipher = OpenSSL::Cipher::AES.new(128, :CBC)
-    decipher.decrypt
-    decipher.key = key
-    decipher.iv = key
-    plain = decipher.update(Base64.decode64(token)) + decipher.final
-    plain.split("|")
+    if DECODE_KEY.class == String and !DECODE_KEY.nil? and !DECODE_KEY.empty? 
+      decipher = OpenSSL::Cipher::AES.new(128, :CBC)
+      decipher.decrypt
+      decipher.key = DECODE_KEY
+      decipher.iv = DECODE_KEY
+      token = decipher.update(Base64.decode64(token)) + decipher.final
+      token = token.split("|")
+    end
+    token
   end
 
 end

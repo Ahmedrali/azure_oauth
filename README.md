@@ -18,10 +18,12 @@ Or install it yourself as:
 
 ## Usage
 
-1- Set an configuration variable "AUTH_URL" equal to the authentication url.
-    e.g. create "/config/initializers/azure_oauth.rb" and put this line on it
+1- Set "AUTH_URL", "DECODE_KEY" and "CALLBACK_URL" as an configuration variables.
+    e.g. create "/config/initializers/azure_oauth.rb" contains these lines
     
-    AUTH_URL = "http://url.com"
+    AUTH_URL 		= "http://url.com"	# 	The authentication url
+	DECODE_KEY     	= "XXXXX.....XXXX"	#	the decoding key that used in encoding process
+	CALLBACK_URL   	= "callback_url"	#	the callback url that will recieve the user email 
     
 2- Use "/authenticate" url to start the authentication process.
 
